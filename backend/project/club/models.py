@@ -3,9 +3,11 @@ from django.db import models
 
 
 club_category = (
-    ('카테고리1','카테고리1'),
-    ('카테고리2','카테고리2'),
-    ('카테고리3','카테고리3'),
+    ('hobby','취미/교양'),
+    ('study','스터디'),
+    ('daliy','일상'),
+    ('exercise','운동'),
+    ('etc','기타'),
 )
 
 class Club(models.Model):
@@ -13,4 +15,6 @@ class Club(models.Model):
     content = models.TextField()
     category = models.CharField(max_length=10, choices=club_category, default='카테고리1')
     date = models.DateField()
+    howto = models.TextField()
+    
     
