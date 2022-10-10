@@ -1,21 +1,20 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractBaseUser, User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 
-class User(AbstractBaseUser):
-    username = models.CharField(max_length=20, unique=True)
-    email = models.EmailField(('email address'), unique=True)
-    # user_image = models.CharField(max_length=200, null=True, blank=True)
+# class User(AbstractBaseUser):
+#     username = models.CharField(max_length=20, unique=True)
+#     email = models.EmailField(max_length=200)
+#     # user_image = models.CharField(max_length=200, null=True, blank=True)
 
-    def __str__(self):
-        return self.username
+#     def __str__(self):
+#         return self.username
 
 
 class Profile(models.Model):
-    username = models.OneToOneField(User, on_delete=models.CASCADE)
-    email = models.EmailField(('email address'), unique=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     nickname = models.CharField(max_length=100, blank=True)
     user_image = models.CharField(max_length=200, null=True, blank=True)
     content = models.TextField(null=True)
