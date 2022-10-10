@@ -16,5 +16,8 @@ class Club(models.Model):
     category = models.CharField(max_length=10, choices=club_category, default='카테고리1')
     date = models.DateField()
     howto = models.TextField()
-    
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    user = models.ManyToManyField(User, related_name='users', blank=True)
+
     
