@@ -15,10 +15,9 @@ from django.conf import settings
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
-from project.club.models import Club
+from club.models import Club
 from .models import *
-from project.club.serializers import ClubListSerializers
-
+from club.serializers import ClubListSerializers
 # 회원가입
 @api_view(['POST'])
 @permission_classes([AllowAny])
