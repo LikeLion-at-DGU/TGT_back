@@ -9,4 +9,7 @@ urlpatterns = [
     path('regist', user_regist, name='regist'),
     path('login', user_login, name='login'),
     path('user_login_check', user_login_check, name='user_login_check'),
+    path('myprofile', myprofile, name='myprofile'),
+    path('profile_update', profile_update, name='profile_update'),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
