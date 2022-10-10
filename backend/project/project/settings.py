@@ -41,7 +41,14 @@ INSTALLED_APPS = [
     'club',
     'rest_framework',
     'accounts',
-]
+    ]
+
+# 새로 추가할 내용
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ]
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
