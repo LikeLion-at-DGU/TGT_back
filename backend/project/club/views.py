@@ -36,18 +36,19 @@ def club_list(request):
 
 #투두리스트 view
 
-@api_view(["GET"])
-def todolist(request):
-    todos = Todo.objects.all()
-    serializer = TodoSerializers(todos , many = True)
-    return Response(serializer.data)
-
-@api_view(["POST"])
-def todocreate(request):
-    serializer = TodoSerializers(data=request.data)
-    if serializer.is_valid_path():
-        serializer.save()
+@api_view(["GET", "POST"])
+def todo_list(request):
+    if request.method == 'GET':
+        todos = Todo.objects.all()
+        serializer = TodoSerializers(todos , many = True)
         return Response(serializer.data)
+    elif request.method == 'POST':
+        # todolists = Todo.objects.filter(user=request.data['user_id'])
+        # 투두리스트 클래스에 유저 추가 필요 !!
+        serializer = TodoSerializers(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
     return Response(serializer.errors)
 
 @api_view(['DELETE'])
