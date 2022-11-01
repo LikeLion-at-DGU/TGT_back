@@ -40,13 +40,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'club',
     'rest_framework',
+    'rest_framework.authtoken',
     'accounts',
     ]
 
 # 새로 추가할 내용
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.JWTAuthentication',
+    ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticated',
     ]
 }
 
@@ -145,3 +150,6 @@ REST_FRAMEWORK = {
         'accounts.authentications.JWTAuthentication',
     )
 }
+
+AUTH_USER_MODEL = 'accounts.User'
+

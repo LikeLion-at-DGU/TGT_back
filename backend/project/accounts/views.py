@@ -1,6 +1,3 @@
-from asyncore import read
-from codecs import raw_unicode_escape_encode
-from math import perm
 from django.shortcuts import render
 from rest_framework.decorators import permission_classes, api_view
 from accounts.serializers import *
