@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.urls import is_valid_path
 from rest_framework.decorators import permission_classes, api_view
 from rest_framework.response import Response
@@ -43,26 +43,45 @@ def todo_list(request):
         serializer = TodoSerializers(todos , many = True)
         return Response(serializer.data)
     elif request.method == 'POST':
-        # todolists = Todo.objects.filter(user=request.data['user_id'])
-        # 투두리스트 클래스에 유저 추가 필요 !!
+        club = get_object_or_404(Club, id=request.data['club'])
+
         serializer = TodoSerializers(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(
+                club=club,
+                user=request.user
+            )
             return Response(serializer.data)
     return Response(serializer.errors)
 
-@api_view(['DELETE'])
-def tododelete(request,pk):
-    todo = Todo.objects.get(id = pk)
-    todo.delete()
-    return Response("Delete Success")
+# @api_view(['DELETE'])
+# def tododelete(request,pk):
+#     todo = Todo.objects.get(id = pk)
+#     todo.delete()
+#     return Response("Delete Success")
 
-@api_view(["PUT"])
-def todoupdate(request,pk):
+# @api_view(["PUT"])
+# def todoupdate(request,pk):
+#     todo = Todo.objects.get(id=pk)
+#     serializer = TodoSerializers(todo , data=request.data)
+#     if serializer.is_valid():
+#         serializer.save()
+#         return Response(serializer.data)
+#     return Response(serializer.errors)
+
+@api_view(['GET','PATCH','DELETE'])
+def todolist_detail(request, pk):
     todo = Todo.objects.get(id=pk)
-    serializer = TodoSerializers(todo , data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors)
 
+    if request.method == 'GET':
+        serializer = TodoSerializers(todo)
+        return Response(serializer.data)
+    
+    elif request.method == 'PATCH':
+        serializer = TodoSerializers(instance=todo, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+        return Response(serializer.data)
+    elif request.method == 'DELETE':
+        todo.delete()
+        return Response("Delete Success")
