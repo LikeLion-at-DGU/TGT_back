@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import permission_classes, api_view
 from accounts.serializers import *
 from rest_framework.response import Response
@@ -12,9 +12,9 @@ from django.conf import settings
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
-from club.models import Club
+from club.models import Club, Todo
 from .models import *
-from club.serializers import ClubListSerializers
+from club.serializers import ClubListSerializers, TodoSerializers
 # 회원가입
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -52,35 +52,69 @@ def user_login_check(request):
     return Response(request.user.username)
 
 
+# Club 가입자 목록, 가입하기, 탈퇴하기
+@api_view(['GET', 'POST'])
+@permission_classes([AllowAny])
+def club_regist(request, club_pk):
+    user = request.user
+    club = get_object_or_404(Club, id=club_pk)
+    
+    if request.method == 'GET':
+        club_serializer = ClubListSerializers(club)
+        return Response(club_serializer.data)
+    elif request.method == 'POST':
+        if user.is_authenticated:
+            # 유저가 클럽에 있으면 삭제
+            if club.users.filter(id=user.id).exists():
+                club.users.remove(user)
+            # 유저가 클럽에 없으면 추가
+            else:
+                club.users.add(user)
+            club_serializer = ClubListSerializers(club)
+            return Response(club_serializer.data)
 
 # 프로필
 @api_view(["GET"])
 @permission_classes([AllowAny])
 def myprofile(request):
     user = request.user
+    print('user:', user)
     if request.method == 'GET':
+
+        # 본인 프로필
         profile = Profile.objects.get(user=user)
         profile_serializer = ProfileSerializer(profile)
+        print(profile_serializer.data, '!!!!!!!!!')
 
         # 유저 클럽 목록
-        user_club = Club.objects.filter(user=user)
+        user_club = Club.objects.filter(users=user)
+        # user_club = get_object_or_404(Club, users=user)
+        print('user_club:', user_club)
         user_club_list = []
         if user_club:
             for club in user_club:
+                print('club:', club)
                 club_serializer = ClubListSerializers(club)
                 user_club_list.append(club_serializer.data)
             
+            
                 
 
-        # 유저 투두리스트 목록
-
+        # # 유저 투두리스트 목록
+        user_todo = Todo.objects.filter(user=user)
+        user_todo_list = []
+        if user_todo:
+            for todo in user_todo:
+                todo_serializer = TodoSerializers(todo)
+                user_todo_list.append(todo_serializer.data)
 
 
 
 
         data = {
-            'profile':profile_serializer,
+            'profile':profile_serializer.data,
             'user_club_list':user_club_list,
+            'user_todo_list':user_todo_list
 
         }
 

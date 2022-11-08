@@ -23,7 +23,9 @@ class UserSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fleids = (
+        fields = (
             'id',
-            'username'
+            'nickname',
+            'user_image',
+            'content',
         )
