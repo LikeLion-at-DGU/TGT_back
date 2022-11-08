@@ -11,5 +11,6 @@ urlpatterns = [
     path('user_login_check', user_login_check, name='user_login_check'),
     path('myprofile', myprofile, name='myprofile'),
     path('profile_update', profile_update, name='profile_update'),
-    
+    path('club_regist/<int:club_pk>', club_regist, name='club_regist')
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
