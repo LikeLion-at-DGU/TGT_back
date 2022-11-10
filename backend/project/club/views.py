@@ -35,7 +35,6 @@ def club_list(request):
 
 
 #투두리스트 view
-
 @api_view(["GET", "POST"])
 def todo_list(request):
     if request.method == 'GET':
@@ -54,21 +53,8 @@ def todo_list(request):
             return Response(serializer.data)
     return Response(serializer.errors)
 
-# @api_view(['DELETE'])
-# def tododelete(request,pk):
-#     todo = Todo.objects.get(id = pk)
-#     todo.delete()
-#     return Response("Delete Success")
 
-# @api_view(["PUT"])
-# def todoupdate(request,pk):
-#     todo = Todo.objects.get(id=pk)
-#     serializer = TodoSerializers(todo , data=request.data)
-#     if serializer.is_valid():
-#         serializer.save()
-#         return Response(serializer.data)
-#     return Response(serializer.errors)
-
+# 투두리스트 상세, 수정, 삭제
 @api_view(['GET','PATCH','DELETE'])
 def todolist_detail(request, pk):
     todo = Todo.objects.get(id=pk)
