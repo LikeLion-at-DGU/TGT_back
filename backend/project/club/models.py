@@ -33,6 +33,7 @@ class Todo(models.Model):
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length = 50)
+    todo_date = models.DateField(null=False)
     box = models.BooleanField(default=False) #투두리스트 앞에 있는 체크박스 괄호안에 blank = false 넣어줘야하나?
 
 

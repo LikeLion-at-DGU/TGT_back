@@ -52,7 +52,7 @@ class User(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     nickname = models.CharField(max_length=100, blank=True)
-    user_image = models.CharField(max_length=200, null=True, blank=True)
+    user_image = models.ImageField(upload_to='profile', null=True)
     content = models.TextField(null=True)
 
 @receiver(post_save, sender=User)
