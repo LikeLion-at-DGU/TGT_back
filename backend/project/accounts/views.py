@@ -112,6 +112,8 @@ def myprofile(request):
 
 
         data = {
+            'username':user.username,
+            'email':user.email,
             'profile':profile_serializer.data,
             'user_club_list':user_club_list,
             'user_todo_list':user_todo_list
