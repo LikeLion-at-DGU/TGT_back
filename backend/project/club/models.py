@@ -17,7 +17,7 @@ class Club(models.Model):
     name = models.CharField(max_length=50)
     introduce = models.TextField()
     content = models.TextField()
-    image = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='club', null=True)
     category = models.CharField(max_length=10, choices=club_category, default='카테고리1')
     start_date = models.DateField(blank=True)
     end_date = models.DateField()
