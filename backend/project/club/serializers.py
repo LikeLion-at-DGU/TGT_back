@@ -2,6 +2,17 @@ from dataclasses import field
 from rest_framework import serializers
 from .models import *
 
+class ClubPostSerializers(serializers.ModelSerializer):
+
+    writer = serializers.PrimaryKeyRelatedField(read_only=True)
+    club = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = ClubPost
+        fields = '__all__'
+        read_only_fields = ('club', )
+
+
 class ClubListSerializers(serializers.ModelSerializer):
 
     # users = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -21,8 +32,9 @@ class ClubListSerializers(serializers.ModelSerializer):
             'created_at',
             'updated_at',
             'users',
-            'post'
         )
+
+
 
 class TodoSerializers(serializers.ModelSerializer):
 

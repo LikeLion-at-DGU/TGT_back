@@ -8,25 +8,31 @@ from accounts.models import User
 club_category = (
     ('hobby','취미/교양'),
     ('study','스터디'),
-    ('daliy','일상'),
+    ('daily','일상'),
     ('exercise','운동'),
     ('etc','기타'),
 )
 
+
 class Club(models.Model):
-    name = models.CharField(max_length=50)
-    introduce = models.TextField()
-    content = models.TextField()
-    image = models.ImageField(upload_to='club', null=True)
-    category = models.CharField(max_length=10, choices=club_category, default='카테고리1')
-    start_date = models.DateField(blank=True)
-    end_date = models.DateField()
-    howto = models.TextField()
+    name = models.CharField(max_length=50, null=False)
+    introduce = models.TextField(null=False)
+    content = models.TextField(null=False)
+    image = models.ImageField(upload_to='club', null=False)
+    category = models.CharField(max_length=10, choices=club_category, default='카테고리1', null=False)
+    start_date = models.DateField(null=False)
+    end_date = models.DateField(null=False)
+    howto = models.TextField(null=False)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)
     users = models.ManyToManyField(User, related_name='users', blank=True)
-    post = models.CharField(max_length=200, null=True, blank=True)
 
+class ClubPost(models.Model):
+    writer = models.ForeignKey(User, on_delete=models.CASCADE)
+    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    post = models.ImageField(upload_to='clubpost', null=False)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class Todo(models.Model):
     id = models.AutoField(primary_key = True)
