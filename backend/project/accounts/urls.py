@@ -1,8 +1,6 @@
 from os import stat
 from django.urls import path
 from accounts.views import *
-from django.conf import settings
-from django.conf.urls.static import static
 
 app_name = 'accounts'
 urlpatterns = [
@@ -12,5 +10,4 @@ urlpatterns = [
     path('myprofile', myprofile, name='myprofile'),
     path('profile_update', profile_update, name='profile_update'),
     path('club_regist/<int:club_pk>', club_regist, name='club_regist')
-
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
