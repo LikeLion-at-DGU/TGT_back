@@ -4,11 +4,8 @@ from rest_framework.decorators import permission_classes, api_view
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
-from .models import Club
-from .serializers import ClubListSerializers
-
-from .models import Todo
-from .serializers import TodoSerializers
+from .models import Club, ClubPost, Todo
+from .serializers import ClubListSerializers, TodoSerializers, ClubPostSerializers
 
 @api_view(['GET','POST'])
 @permission_classes([AllowAny]) # 로그인 된 사람만 볼 수 있음
@@ -28,11 +25,44 @@ def club_list_create(request):
 
 @api_view(['GET'])
 @permission_classes([AllowAny]) # 로그인 된 사람만
-def club_list(request):
+def club_detail(request, club_id):
+    club = get_object_or_404(Club, id=club_id)
     if request.method == 'GET':
-        clubs = Club.objects.all().order_by('-created_at')        
+        serilaizer = ClubListSerializers(club)
+        return Response(serilaizer.data)
+        
 
+@api_view(['GET','POST'])
+@permission_classes([AllowAny])
+def club_post_create(request, club_id):
+    club = get_object_or_404(Club, id=club_id)
 
+    if request.method == 'GET':
+        post = ClubPost.objects.filter(club=club)
+        serializer = ClubPostSerializers(post, many=True)
+        return Response(data=serializer.data)
+    elif request.method == 'POST':
+        serializer = ClubPostSerializers(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(
+                club=club,
+                writer=request.user
+            )
+        return Response(data=serializer.data)
+    
+@api_view(['GET','PATCH','DELETE'])
+@permission_classes([AllowAny])
+def club_post_detail(request, club_id, post_id):
+    post = get_object_or_404(ClubPost, id=post_id)
+
+    if request.method == 'GET':
+        serializer = ClubPostSerializers(post)
+        return Response(serializer.data)
+    # elif request.method == 'PATCH':
+
+    elif request.method == 'DELETE':
+        post.delete()
+        return Response("Post Delete Success!")
 
 #투두리스트 view
 @api_view(["GET", "POST"])
