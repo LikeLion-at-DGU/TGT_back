@@ -54,6 +54,7 @@ class Profile(models.Model):
     nickname = models.CharField(max_length=100, blank=True)
     user_image = models.ImageField(upload_to='profile', null=True)
     content = models.TextField(null=True)
+    memo = models.TextField(null=True)
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

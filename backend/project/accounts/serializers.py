@@ -27,4 +27,5 @@ class ProfileSerializer(serializers.ModelSerializer):
             'id',
             'user_image',
             'content',
+            'memo'
         )
