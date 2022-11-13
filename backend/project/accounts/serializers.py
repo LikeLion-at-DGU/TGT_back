@@ -25,7 +25,6 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = (
             'id',
-            'nickname',
             'user_image',
             'content',
         )

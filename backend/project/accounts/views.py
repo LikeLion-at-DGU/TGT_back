@@ -112,6 +112,8 @@ def myprofile(request):
 
 
         data = {
+            'username':user.username,
+            'email':user.email,
             'profile':profile_serializer.data,
             'user_club_list':user_club_list,
             'user_todo_list':user_todo_list
@@ -125,16 +127,21 @@ def myprofile(request):
 @permission_classes([AllowAny])
 def profile_update(request):
     user = request.user
+    profile = Profile.objects.get(user=user)
+
     if request.method == 'GET':
-        profile = Profile.objects.get(user=user)
         serializer = ProfileSerializer(profile)
-        return Response(data=serializer.data)
+
     elif request.method == 'PATCH':
-        profile = Profile.objects.get(user=user)
         serializer = ProfileSerializer(profile, data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-        return Response(data=serializer.data)
+    data = {
+        "profile":serializer.data,
+        "username":user.username,
+        'email':user.email
+    }
+    return Response(data)
 
 
 
