@@ -30,7 +30,7 @@ class Club(models.Model):
 class ClubPost(models.Model):
     writer = models.ForeignKey(User, on_delete=models.CASCADE)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
-    post = models.ImageField(upload_to='clubpost', null=False)
+    post = models.ImageField(upload_to='club/post', null=False)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)
 
