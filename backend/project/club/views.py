@@ -7,11 +7,15 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Club, ClubPost, Todo
 from .serializers import ClubListSerializers, TodoSerializers, ClubPostSerializers
 
+from django.db.models import Q
+
 @api_view(['GET','POST'])
 @permission_classes([AllowAny]) # 로그인 된 사람만 볼 수 있음
 def club_list_create(request):
+    user = request.user.id
+
     if request.method == 'GET':
-        clubs = Club.objects.all()
+        clubs = Club.objects.filter(~Q(users=user))
         serializer = ClubListSerializers(clubs, many=True)
 
         return Response(data=serializer.data)
