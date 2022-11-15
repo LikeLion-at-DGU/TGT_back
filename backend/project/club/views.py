@@ -27,13 +27,16 @@ def club_list_create(request):
             serializer.save()
             return Response(data=serializer.data)
 
-@api_view(['GET'])
+@api_view(['GET', 'DELETE'])
 @permission_classes([AllowAny]) # 로그인 된 사람만
 def club_detail(request, club_id):
     club = get_object_or_404(Club, id=club_id)
     if request.method == 'GET':
         serilaizer = ClubListSerializers(club)
         return Response(serilaizer.data)
+    elif request.method == 'DELETE':
+        club.delete()
+        return Response("Club Delete Success!")
         
 
 @api_view(['GET','POST'])
